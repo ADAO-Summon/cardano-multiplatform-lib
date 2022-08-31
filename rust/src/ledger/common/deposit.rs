@@ -1,9 +1,3 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use crate::{Withdrawals, Certificates, CertificateEnum, TransactionBody, error::JsError};
 
 use super::value::{BigNum, Value, to_bignum, Coin};
@@ -62,7 +56,7 @@ pub fn internal_get_deposit(
 }
 
 
-#[wasm_bindgen]
+
 pub fn get_implicit_input(
     txbody: &TransactionBody,
     pool_deposit: &BigNum, // // protocol parameter
@@ -76,7 +70,7 @@ pub fn get_implicit_input(
     )
 }
 
-#[wasm_bindgen]
+
 pub fn get_deposit(
     txbody: &TransactionBody,
     pool_deposit: &BigNum, // // protocol parameter

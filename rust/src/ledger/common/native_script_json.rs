@@ -1,16 +1,10 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use std::collections::HashMap;
 use hex::FromHex;
 use crate::{NativeScript, error::JsError, crypto::Bip32PublicKey, ScriptPubkey, NativeScripts, ScriptAll, ScriptAny, ScriptNOfK, TimelockStart, TimelockExpiry};
 
 
 /// Used to choose the schema for a script JSON string
-#[wasm_bindgen]
+
 pub enum ScriptSchema {
     Wallet,
     Node,
@@ -24,7 +18,7 @@ pub enum ScriptSchema {
 /// * node: https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/simple-scripts.md
 ///
 /// self_xpub is expected to be a Bip32PublicKey as hex-encoded bytes
-#[wasm_bindgen]
+
 pub fn encode_json_str_to_native_script(
     json: &str,
     self_xpub: &str,

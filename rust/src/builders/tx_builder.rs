@@ -77,7 +77,7 @@ fn min_fee(tx_builder: &TransactionBuilder) -> Result<Coin, JsError> {
     ledger::alonzo::fees::min_no_script_fee(&full_tx, &tx_builder.config.fee_algo)
 }
 
-#[wasm_bindgen]
+
 pub enum CoinSelectionStrategyCIP2 {
     /// Performs CIP2's Largest First ada-only selection. Will error if outputs contain non-ADA assets.
     LargestFirst,
@@ -89,7 +89,7 @@ pub enum CoinSelectionStrategyCIP2 {
     RandomImproveMultiAsset,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct TransactionBuilderConfig {
     fee_algo: LinearFee,
@@ -107,7 +107,7 @@ pub struct TransactionBuilderConfig {
     prefer_pure_change: bool,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Default)]
 pub struct TransactionBuilderConfigBuilder {
     fee_algo: Option<LinearFee>,
@@ -125,7 +125,7 @@ pub struct TransactionBuilderConfigBuilder {
     prefer_pure_change: bool,
 }
 
-#[wasm_bindgen]
+
 impl TransactionBuilderConfigBuilder {
     pub fn new() -> Self {
         // we have to provide new to expose it to WASM builds
@@ -241,7 +241,7 @@ impl TransactionBuilderConfigBuilder {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct TransactionBuilder {
     config: TransactionBuilderConfig,
@@ -263,7 +263,7 @@ pub struct TransactionBuilder {
     reference_inputs: Option<Vec<TransactionUnspentOutput>>,
 }
 
-#[wasm_bindgen]
+
 impl TransactionBuilder {
     /// This automatically selects and adds inputs from {inputs} consisting of just enough to cover
     /// the outputs that have already been added.
@@ -1250,7 +1250,7 @@ impl TransactionBuilder {
     }
 }
 
-#[wasm_bindgen]
+
 pub struct TxRedeemerBuilder {
     draft_body: TransactionBody,
     witness_builders: WitnessBuilders,
@@ -1258,7 +1258,7 @@ pub struct TxRedeemerBuilder {
     costmdls: Costmdls
 }
 
-#[wasm_bindgen]
+
 impl TxRedeemerBuilder {
     /// Builds the transaction and moves to the next step where any real witness can be added
     /// NOTE: is_valid set to true
@@ -1360,7 +1360,7 @@ impl TxRedeemerBuilder {
     }
 }
 
-#[wasm_bindgen]
+
 pub struct SignedTxBuilder {
     body: TransactionBody,
     witness_set: TransactionWitnessSetBuilder,
@@ -1368,7 +1368,7 @@ pub struct SignedTxBuilder {
     auxiliary_data: Option<AuxiliaryData>,
 }
 
-#[wasm_bindgen]
+
 impl SignedTxBuilder {
     pub fn new_with_data(
         body: &TransactionBody,

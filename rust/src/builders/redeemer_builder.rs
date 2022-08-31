@@ -3,14 +3,14 @@ use crate::{*};
 
 use super::{input_builder::InputBuilderResult, mint_builder::MintBuilderResult, withdrawal_builder::WithdrawalBuilderResult, certificate_builder::CertificateBuilderResult};
 
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, PartialOrd, Ord, Debug, PartialEq, Eq, Hash)]
 pub struct RedeemerWitnessKey {
     tag: RedeemerTag,
     index: BigNum,
 }
 
-#[wasm_bindgen]
+
 impl RedeemerWitnessKey {
 
     pub fn tag(&self) -> RedeemerTag {
@@ -32,14 +32,14 @@ impl RedeemerWitnessKey {
 /// Redeemer without the tag of index
 /// This allows builder code to return partial redeemers
 /// and then later have them placed in the right context
-#[wasm_bindgen]
+
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct UntaggedRedeemer {
     data: PlutusData,
     ex_units: ExUnits,
 }
 
-#[wasm_bindgen]
+
 impl UntaggedRedeemer {
 
     pub fn datum(&self) -> PlutusData {

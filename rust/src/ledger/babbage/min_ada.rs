@@ -1,9 +1,3 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use crate::Datum;
 use crate::TransactionOutput;
 use crate::address::Address;
@@ -19,7 +13,7 @@ use crate::plutus::ScriptRef;
     since = "1.0.0",
     note = "If you don't need to support Alonzo, you don't need this function"
 )]
-#[wasm_bindgen]
+
 pub fn compatible_min_ada_required(
     output: &TransactionOutput,
     coins_per_utxo_byte: &BigNum, // protocol parameter (in lovelace)
@@ -30,7 +24,7 @@ pub fn compatible_min_ada_required(
     Ok(std::cmp::max(babbage_min, alonzo_min))
 }
 
-#[wasm_bindgen]
+
 pub fn min_ada_required(
     output: &TransactionOutput,
     coins_per_utxo_byte: &BigNum, // protocol parameter (in lovelace)

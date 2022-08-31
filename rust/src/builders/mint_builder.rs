@@ -3,7 +3,7 @@ use crate::builders::witness_builder::{InputAggregateWitnessData, PartialPlutusW
 
 use super::witness_builder::{RequiredWitnessSet, NativeScriptWitnessInfo};
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct MintBuilderResult {
     pub(crate) policy_id: PolicyID,
@@ -12,13 +12,13 @@ pub struct MintBuilderResult {
     pub(crate) required_wits: RequiredWitnessSet,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct SingleMintBuilder {
     assets: MintAssets,
 }
 
-#[wasm_bindgen]
+
 impl SingleMintBuilder {
     pub fn new(assets: &MintAssets) -> Self {
         Self {

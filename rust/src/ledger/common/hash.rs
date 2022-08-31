@@ -1,25 +1,19 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use crate::{TransactionBody, metadata::AuxiliaryData, crypto::{AuxiliaryDataHash, blake2b256, DataHash, TransactionHash, ScriptDataHash, blake2b224, ScriptHash, self}, plutus::{PlutusData, Redeemers, Costmdls, PlutusList, Languages}, error::JsError};
 
 
-#[wasm_bindgen]
+
 pub fn hash_auxiliary_data(auxiliary_data: &AuxiliaryData) -> AuxiliaryDataHash {
   AuxiliaryDataHash::from(blake2b256(&auxiliary_data.to_bytes()))
 }
-#[wasm_bindgen]
+
 pub fn hash_transaction(tx_body: &TransactionBody) -> TransactionHash {
     TransactionHash::from(crypto::blake2b256(tx_body.to_bytes().as_ref()))
 }
-#[wasm_bindgen]
+
 pub fn hash_plutus_data(plutus_data: &PlutusData) -> DataHash {
     DataHash::from(blake2b256(&plutus_data.to_bytes()))
 }
-#[wasm_bindgen]
+
 pub fn hash_script_data(redeemers: &Redeemers, cost_models: &Costmdls, datums: Option<PlutusList>) -> ScriptDataHash {
     let mut buf = Vec::new();
     if redeemers.len() == 0 && datums.is_some() {
@@ -51,7 +45,7 @@ pub fn hash_script_data(redeemers: &Redeemers, cost_models: &Costmdls, datums: O
     ScriptDataHash::from(blake2b256(&buf))
 }
 
-#[wasm_bindgen]
+
 pub fn calc_script_data_hash(redeemers: &Redeemers, datums: &PlutusList, cost_models: &Costmdls, used_langs: &Languages) -> Result<Option<ScriptDataHash>, JsError> {
     if redeemers.len() > 0 || datums.len() > 0 {
         let mut required_costmdls = Costmdls::new();
@@ -81,7 +75,7 @@ pub fn calc_script_data_hash(redeemers: &Redeemers, datums: &PlutusList, cost_mo
 /// So this avoids scripts in different languages mapping to the same hash
 /// Note that the enum value here is different than the enum value for deciding the cost model of a script
 /// https://github.com/input-output-hk/cardano-ledger/blob/9c3b4737b13b30f71529e76c5330f403165e28a6/eras/alonzo/impl/src/Cardano/Ledger/Alonzo.hs#L127
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum ScriptHashNamespace {
     NativeScript,

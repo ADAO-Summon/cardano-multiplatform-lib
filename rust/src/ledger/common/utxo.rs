@@ -4,18 +4,13 @@ use cbor_event::Special as CBORSpecial;
 use crate::error::JsError;
 
 use cbor_event::{self, de::Deserializer, se::{Serialize, Serializer}};
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
 
 use crate::{to_from_bytes, TransactionInput, TransactionOutput, error::{DeserializeFailure, DeserializeError}};
 
 use super::binary::*;
 
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct TransactionUnspentOutput {
     pub(crate) input: TransactionInput,
@@ -24,7 +19,7 @@ pub struct TransactionUnspentOutput {
 
 to_from_bytes!(TransactionUnspentOutput);
 
-#[wasm_bindgen]
+
 impl TransactionUnspentOutput {
     pub fn new(input: &TransactionInput, output: &TransactionOutput) -> TransactionUnspentOutput {
         Self {
@@ -84,11 +79,11 @@ impl Deserialize for TransactionUnspentOutput {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Default)]
 pub struct TransactionUnspentOutputs(pub(crate) Vec<TransactionUnspentOutput>);
 
-#[wasm_bindgen]
+
 impl TransactionUnspentOutputs {
     pub fn new() -> Self {
         // we have to provide new to expose it to WASM builds

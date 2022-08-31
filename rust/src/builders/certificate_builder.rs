@@ -81,7 +81,7 @@ pub fn add_cert_vkeys(cert_enum: &Certificate, vkeys: &mut HashSet<Ed25519KeyHas
     Ok(())
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct CertificateBuilderResult {
     pub(crate) cert: Certificate,
@@ -89,13 +89,13 @@ pub struct CertificateBuilderResult {
     pub(crate) required_wits: RequiredWitnessSet,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct SingleCertificateBuilder {
     cert: Certificate,
 }
 
-#[wasm_bindgen]
+
 impl SingleCertificateBuilder {
     pub fn new(cert: &Certificate) -> Self {
         Self {

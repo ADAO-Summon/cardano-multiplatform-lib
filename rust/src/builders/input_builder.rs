@@ -26,7 +26,7 @@ pub fn input_required_wits(utxo_info: &TransactionOutput, required_witnesses: &m
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct InputBuilderResult {
     pub(crate) input: TransactionInput,
@@ -35,14 +35,14 @@ pub struct InputBuilderResult {
     pub(crate) required_wits: RequiredWitnessSet,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct SingleInputBuilder {
     input: TransactionInput,
     utxo_info: TransactionOutput,
 }
 
-#[wasm_bindgen]
+
 impl SingleInputBuilder {
     pub fn new(input: &TransactionInput, utxo_info: &TransactionOutput) -> Self {
         Self {

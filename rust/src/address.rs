@@ -36,10 +36,10 @@ fn variable_nat_encode(mut num: num_bigint::BigUint) -> Vec<u8> {
     output
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct NetworkInfo(genesis::network_info::NetworkInfo);
-#[wasm_bindgen]
+
 impl NetworkInfo {
     pub fn new(network_id: u8, protocol_magic: u32) -> Self {
         NetworkInfo(genesis::network_info::NetworkInfo::new(
@@ -68,7 +68,7 @@ pub enum StakeCredType {
     Script(ScriptHash),
 }
 
-#[wasm_bindgen]
+
 #[repr(u8)]
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum StakeCredKind {
@@ -76,11 +76,11 @@ pub enum StakeCredKind {
     Script,
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Hash, Ord, PartialEq, PartialOrd, JsonSchema)]
 pub struct StakeCredential(StakeCredType);
 
-#[wasm_bindgen]
+
 impl StakeCredential {
     pub fn from_keyhash(hash: &Ed25519KeyHash) -> Self {
         StakeCredential(StakeCredType::Key(hash.clone()))
@@ -196,7 +196,7 @@ pub enum AddrType {
     Byron(ByronAddress),
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Address {
     pub(crate) variant: AddrType,
@@ -237,7 +237,7 @@ impl JsonSchema for Address {
 /// Careful: this enum doesn't include the network ID part of the header
 /// ex: base address isn't 0b0000_0000 but instead 0b0000
 /// Use `header_matches_kind` if you don't want to implement the bitwise operators yourself
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 #[repr(u8)]
 pub enum AddressHeaderKind {
@@ -258,7 +258,7 @@ pub enum AddressHeaderKind {
 // to/from_bytes() are the raw encoding without a wrapping CBOR Bytes tag
 // while Serialize and Deserialize traits include that for inclusion with
 // other CBOR types
-#[wasm_bindgen]
+
 impl Address {
     /// header has 4 bits addr type discrim then 4 bits network discrim.
     /// Copied from shelley.cddl:
@@ -581,7 +581,7 @@ impl Deserialize for Address {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct BaseAddress {
     network: u8,
@@ -589,7 +589,7 @@ pub struct BaseAddress {
     stake: StakeCredential,
 }
 
-#[wasm_bindgen]
+
 impl BaseAddress {
     pub fn new(network: u8, payment: &StakeCredential, stake: &StakeCredential) -> Self {
         Self {
@@ -623,14 +623,14 @@ impl BaseAddress {
 }
 
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct EnterpriseAddress {
     network: u8,
     payment: StakeCredential,
 }
 
-#[wasm_bindgen]
+
 impl EnterpriseAddress {
     pub fn new(network: u8, payment: &StakeCredential) -> Self {
         Self {
@@ -658,14 +658,14 @@ impl EnterpriseAddress {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct RewardAddress {
     network: u8,
     payment: StakeCredential,
 }
 
-#[wasm_bindgen]
+
 impl RewardAddress {
     pub fn new(network: u8, payment: &StakeCredential) -> Self {
         Self {
@@ -740,7 +740,7 @@ impl Deserialize for RewardAddress {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Pointer {
     slot: num_bigint::BigUint,
@@ -748,7 +748,7 @@ pub struct Pointer {
     cert_index: num_bigint::BigUint,
 }
 
-#[wasm_bindgen]
+
 impl Pointer {
     pub fn new(slot: &Slot, tx_index: &TransactionIndex, cert_index: &CertificateIndex) -> Self {
         Self {
@@ -774,7 +774,7 @@ impl Pointer {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct PointerAddress {
     network: u8,
@@ -782,7 +782,7 @@ pub struct PointerAddress {
     stake: Pointer,
 }
 
-#[wasm_bindgen]
+
 impl PointerAddress {
     pub fn new(network: u8, payment: &StakeCredential, stake: &Pointer) -> Self {
         Self {

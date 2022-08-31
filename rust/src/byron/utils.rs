@@ -4,14 +4,14 @@ use crate::{chain_crypto::{Sha3_256}, genesis::network_info::NetworkInfo, crypto
 use std::{convert::TryInto, fmt};
 use super::*;
 
-#[wasm_bindgen]
+
 impl StakeDistribution {
     pub fn new_single_key(pubk: &Bip32PublicKey) -> Self {
         StakeDistribution::new_single_key_distr(&StakeholderId::new(pubk))
     }
 }
 
-#[wasm_bindgen]
+
 impl StakeholderId {
     pub fn new(pubk: &Bip32PublicKey) -> StakeholderId {
         // the reason for this unwrap is that we have to dynamically allocate 66 bytes
@@ -23,7 +23,7 @@ impl StakeholderId {
     }
 }
 
-#[wasm_bindgen]
+
 impl AddrAttributes {
     pub fn new_bootstrap_era(hdap: Option<HDAddressPayload>, protocol_magic: Option<ProtocolMagic>) -> Self {
         let adjusted_magic = match &protocol_magic {
@@ -51,7 +51,7 @@ impl AddrAttributes {
     }
 }
 
-#[wasm_bindgen]
+
 impl AddressId {
     pub fn new(addr_type: &ByronAddrType, spending_data: &SpendingData, attrs: &AddrAttributes) -> Self {
         // the reason for this unwrap is that we have to dynamically allocate 66 bytes
@@ -64,7 +64,7 @@ impl AddressId {
     }
 }
 
-#[wasm_bindgen]
+
 impl AddressContent {
     pub fn hash_and_create(addr_type: &ByronAddrType, spending_data: &SpendingData, attributes:& AddrAttributes) -> AddressContent {
         let address_id = AddressId::new(addr_type, spending_data, attributes);
@@ -154,7 +154,7 @@ pub enum AddressMatchXPub {
     No,
 }
 
-#[wasm_bindgen]
+
 impl ByronAddress {
 
     pub fn to_base58(&self) -> String {
@@ -244,7 +244,7 @@ impl Default for ProtocolMagic {
     }
 }
 
-#[wasm_bindgen]
+
 impl ProtocolMagic {
     pub fn new(val: u32) -> Self {
         ProtocolMagic(val)

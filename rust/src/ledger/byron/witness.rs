@@ -1,12 +1,6 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use crate::{crypto::{TransactionHash, LegacyDaedalusPrivateKey, BootstrapWitness, Bip32PublicKey, Vkey, Bip32PrivateKey, Ed25519Signature}, byron::ByronAddress};
 
-#[wasm_bindgen]
+
 pub fn make_daedalus_bootstrap_witness(
     tx_body_hash: &TransactionHash,
     addr: &ByronAddress,
@@ -26,7 +20,7 @@ pub fn make_daedalus_bootstrap_witness(
     )
 }
 
-#[wasm_bindgen]
+
 pub fn make_icarus_bootstrap_witness(
     tx_body_hash: &TransactionHash,
     addr: &ByronAddress,

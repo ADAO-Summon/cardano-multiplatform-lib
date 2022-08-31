@@ -264,14 +264,14 @@ const CRC_TABLE: [u32; 256] = [
 ///
 /// This structure allows implements the `Write` trait making it easier
 /// to compute the crc32 of a stream.
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, Hash, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Crc32(pub(crate) u32);
 
 to_from_bytes!(Crc32);
 to_from_json!(Crc32);
 
-#[wasm_bindgen]
+
 impl Crc32 {
     pub fn from_val(val: u32) -> Crc32 {
         Self(val)

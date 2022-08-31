@@ -4,14 +4,14 @@ use super::super::super::*;
 
 /// Careful: although the linear fee is the same for Byron & Shelley
 /// The value of the parameters and how fees are computed is not the same
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct LinearFee {
     constant: Coin,
     coefficient: Coin,
 }
 
-#[wasm_bindgen]
+
 impl LinearFee {
     pub fn constant(&self) -> Coin {
         self.constant
@@ -29,7 +29,7 @@ impl LinearFee {
     }
 }
 
-#[wasm_bindgen]
+
 pub fn min_script_fee(tx: &Transaction, ex_unit_prices: &ExUnitPrices) -> Result<Coin, JsError> {
     if let Some(redeemers) = tx.witness_set().redeemers() {
         let total_ex_units = redeemers.get_total_ex_units()?;
@@ -58,7 +58,7 @@ pub fn min_script_fee(tx: &Transaction, ex_unit_prices: &ExUnitPrices) -> Result
     }
 }
 
-#[wasm_bindgen]
+
 pub fn min_no_script_fee(
     tx: &Transaction,
     linear_fee: &LinearFee,
@@ -68,7 +68,7 @@ pub fn min_no_script_fee(
         .checked_add(&linear_fee.constant())
 }
 
-#[wasm_bindgen]
+
 pub fn min_fee(
     tx: &Transaction,
     linear_fee: &LinearFee,

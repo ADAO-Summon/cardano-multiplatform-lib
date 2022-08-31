@@ -1,9 +1,3 @@
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
-
 use std::io::{BufRead, Write};
 
 use schemars::JsonSchema;
@@ -37,11 +31,11 @@ mod utils;
 mod crc32;
 mod base58;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Hash, Copy, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ProtocolMagic(pub(crate) u32);
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct HDAddressPayload(pub(crate) Vec<u8>);
 
@@ -50,7 +44,7 @@ to_from_bytes!(HDAddressPayload);
 impl_hash_type!(StakeholderId, 28);
 impl_hash_type!(AddressId, 28);
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct AddrAttributes {
@@ -62,7 +56,7 @@ pub struct AddrAttributes {
 to_from_bytes!(AddrAttributes);
 to_from_json!(AddrAttributes);
 
-#[wasm_bindgen]
+
 
 impl AddrAttributes {
     pub fn set_stake_distribution(&mut self, stake_distribution: &StakeDistribution) {
@@ -98,7 +92,7 @@ impl AddrAttributes {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum StakeDistributionKind {
@@ -112,7 +106,7 @@ enum StakeDistributionEnum {
     SingleKeyDistr(SingleKeyDistr),
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct StakeDistribution(StakeDistributionEnum);
@@ -120,7 +114,7 @@ pub struct StakeDistribution(StakeDistributionEnum);
 to_from_bytes!(StakeDistribution);
 to_from_json!(StakeDistribution);
 
-#[wasm_bindgen]
+
 
 impl StakeDistribution {
     pub fn new_bootstrap_era_distr() -> Self {
@@ -153,7 +147,7 @@ impl StakeDistribution {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, Hash, PartialEq, PartialOrd)]
 pub struct ByronAddress {
@@ -164,7 +158,7 @@ pub struct ByronAddress {
 to_from_bytes!(ByronAddress);
 to_from_json!(ByronAddress);
 
-#[wasm_bindgen]
+
 
 impl ByronAddress {
     pub fn addr(&self) -> Vec<u8> {
@@ -206,7 +200,7 @@ impl JsonSchema for ByronAddress {
     fn is_referenceable() -> bool { String::is_referenceable() }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct AddressContent {
@@ -218,7 +212,7 @@ pub struct AddressContent {
 to_from_bytes!(AddressContent);
 to_from_json!(AddressContent);
 
-#[wasm_bindgen]
+
 
 impl AddressContent {
     pub fn address_id(&self) -> AddressId {
@@ -242,7 +236,7 @@ impl AddressContent {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum AddrtypeKind {
@@ -258,7 +252,7 @@ pub enum AddrTypeEnum {
     ATRedeem,
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Copy, Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ByronAddrType(AddrTypeEnum);
@@ -266,7 +260,7 @@ pub struct ByronAddrType(AddrTypeEnum);
 to_from_bytes!(ByronAddrType);
 to_from_json!(ByronAddrType);
 
-#[wasm_bindgen]
+
 
 impl ByronAddrType {
     pub fn new_ATPubKey() -> Self {
@@ -290,7 +284,7 @@ impl ByronAddrType {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct BootstrapEraDistr {
@@ -299,7 +293,7 @@ pub struct BootstrapEraDistr {
 to_from_bytes!(BootstrapEraDistr);
 to_from_json!(BootstrapEraDistr);
 
-#[wasm_bindgen]
+
 
 impl BootstrapEraDistr {
     pub fn new() -> Self {
@@ -308,7 +302,7 @@ impl BootstrapEraDistr {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SingleKeyDistr {
@@ -318,7 +312,7 @@ pub struct SingleKeyDistr {
 to_from_bytes!(SingleKeyDistr);
 to_from_json!(SingleKeyDistr);
 
-#[wasm_bindgen]
+
 
 impl SingleKeyDistr {
     pub fn stakeholder_id(&self) -> StakeholderId {
@@ -332,13 +326,13 @@ impl SingleKeyDistr {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ByronScript(pub(crate) [u8; 32]); // TODO: not sure what this type is supposed to represent. Is it a hash?
 
 to_from_bytes!(ByronScript);
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum SpendingDataKind {
@@ -354,7 +348,7 @@ enum SpendingDataEnum {
     SpendingDataRedeemASD(SpendingDataRedeemASD),
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SpendingData(SpendingDataEnum);
@@ -362,7 +356,7 @@ pub struct SpendingData(SpendingDataEnum);
 to_from_bytes!(SpendingData);
 to_from_json!(SpendingData);
 
-#[wasm_bindgen]
+
 
 impl SpendingData {
     pub fn new_spending_data_pub_key(public_ed25519_bip32: &Bip32PublicKey) -> Self {
@@ -407,7 +401,7 @@ impl SpendingData {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SpendingDataPubKeyASD {
@@ -417,7 +411,7 @@ pub struct SpendingDataPubKeyASD {
 to_from_bytes!(SpendingDataPubKeyASD);
 to_from_json!(SpendingDataPubKeyASD);
 
-#[wasm_bindgen]
+
 
 impl SpendingDataPubKeyASD {
     pub fn public_ed25519_bip32(&self) -> Bip32PublicKey {
@@ -431,7 +425,7 @@ impl SpendingDataPubKeyASD {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SpendingDataRedeemASD {
@@ -441,7 +435,7 @@ pub struct SpendingDataRedeemASD {
 to_from_bytes!(SpendingDataRedeemASD);
 to_from_json!(SpendingDataRedeemASD);
 
-#[wasm_bindgen]
+
 
 impl SpendingDataRedeemASD {
     pub fn public_ed25519(&self) -> PublicKey {
@@ -455,7 +449,7 @@ impl SpendingDataRedeemASD {
     }
 }
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SpendingDataScriptASD {
@@ -466,7 +460,7 @@ to_from_bytes!(SpendingDataScriptASD);
 to_from_json!(SpendingDataScriptASD);
 
 
-#[wasm_bindgen]
+
 
 impl SpendingDataScriptASD {
     pub fn script(&self) -> ByronScript {
@@ -484,7 +478,7 @@ to_from_bytes!(ByronTxout);
 to_from_json!(ByronTxout);
 
 
-#[wasm_bindgen]
+
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ByronTxout {
@@ -492,7 +486,7 @@ pub struct ByronTxout {
     amount: Coin,
 }
 
-#[wasm_bindgen]
+
 impl ByronTxout {
     pub fn address(&self) -> ByronAddress {
         self.address.clone()

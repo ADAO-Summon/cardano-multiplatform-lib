@@ -6,7 +6,7 @@ use crate::{*, ledger::{babbage::min_ada::{min_ada_required, compatible_min_ada_
 /// 2. Some fields like amounts have many ways it could be set (some depending on other field values being known)
 /// 3. Easier to adapt as the output format gets more complicated in future Cardano releases
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Default)]
 pub struct TransactionOutputBuilder {
     pub(crate) address: Option<Address>,
@@ -15,7 +15,7 @@ pub struct TransactionOutputBuilder {
     pub(crate) script_ref: Option<ScriptRef>,
 }
 
-#[wasm_bindgen]
+
 impl TransactionOutputBuilder {
     pub fn new() -> Self {
         // explicit add new so that it's visible from WASM
@@ -60,7 +60,7 @@ impl TransactionOutputBuilder {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct TransactionOutputAmountBuilder {
     address: Address,
@@ -70,7 +70,7 @@ pub struct TransactionOutputAmountBuilder {
     communication_datum: Option<PlutusData>,
 }
 
-#[wasm_bindgen]
+
 impl TransactionOutputAmountBuilder {
 
     pub fn with_value(&self, amount: &Value) -> Self {
@@ -130,13 +130,13 @@ impl TransactionOutputAmountBuilder {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct SingleOutputBuilderResult {
     output: TransactionOutput,
     communication_datum: Option<PlutusData>,
 }
-#[wasm_bindgen]
+
 impl SingleOutputBuilderResult {
     pub fn new(output: &TransactionOutput) -> SingleOutputBuilderResult {
         Self {

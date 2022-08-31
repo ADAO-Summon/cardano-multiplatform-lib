@@ -15,7 +15,7 @@ pub fn withdrawal_required_wits(address: &RewardAddress, required_witnesses: &mu
     };
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct WithdrawalBuilderResult {
     pub(crate) address: RewardAddress,
@@ -24,14 +24,14 @@ pub struct WithdrawalBuilderResult {
     pub(crate) required_wits: RequiredWitnessSet,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone)]
 pub struct SingleWithdrawalBuilder {
     address: RewardAddress,
     amount: Coin,
 }
 
-#[wasm_bindgen]
+
 impl SingleWithdrawalBuilder {
     pub fn new(address: &RewardAddress, amount: &Coin) -> Self {
         Self {

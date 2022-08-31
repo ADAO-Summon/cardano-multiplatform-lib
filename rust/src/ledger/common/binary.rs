@@ -17,7 +17,7 @@ macro_rules! from_bytes {
     ($name:ident, $data: ident, $body:block) => {
         // wasm-exposed JsError return - JsError panics when used outside wasm
         #[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-        #[wasm_bindgen]
+        
         impl $name {
             pub fn from_bytes($data: Vec<u8>) -> Result<$name, JsError> {
                 Ok($body?)
@@ -45,7 +45,7 @@ pub(crate) use from_bytes;
 //       so make sure you invoke this outside of one
 macro_rules! to_bytes {
     ($name:ident) => {
-        #[wasm_bindgen]
+        
         impl $name {
             pub fn to_bytes(&self) -> Vec<u8> {
                 let mut buf = Serializer::new_vec();
@@ -67,7 +67,7 @@ pub(crate) use to_from_bytes;
 
 macro_rules! to_from_json {
     ($name:ident) => {
-        #[wasm_bindgen]
+        
         impl $name {
             pub fn to_json(&self) -> Result<String, JsError> {
                 serde_json::to_string_pretty(&self)

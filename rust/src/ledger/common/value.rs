@@ -1,11 +1,6 @@
 use std::io::{BufRead, Seek, Write};
 
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
 use schemars::JsonSchema;
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::*;
 
 use cbor_event::Special as CBORSpecial;
 use cbor_event::Type as CBORType;
@@ -17,7 +12,7 @@ use super::binary::*;
 // Generic u64 wrapper for platforms that don't support u64 or BigInt/etc
 // This is an unsigned type - no negative numbers.
 // Can be converted to/from plain rust 
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BigNum(u64);
 
@@ -32,7 +27,7 @@ impl std::str::FromStr for BigNum {
     }
 }
 
-#[wasm_bindgen]
+
 impl BigNum {
     // Create a BigNum from a standard rust string representation
     #[allow(clippy::should_implement_trait)]
@@ -174,7 +169,7 @@ pub fn from_bignum(val: &BigNum) -> u64 {
 // Specifies an amount of ADA in terms of lovelace
 pub type Coin = BigNum;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, /*Hash,*/ Ord, PartialEq, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Value {
     pub (crate) coin: Coin,
@@ -185,7 +180,7 @@ to_from_bytes!(Value);
 
 to_from_json!(Value);
 
-#[wasm_bindgen]
+
 impl Value {
 
     pub fn new(coin: &Coin) -> Value {
@@ -410,13 +405,13 @@ impl std::str::FromStr for Int {
 }
 
 // CBOR has int = uint / nint
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Int(pub (crate) i128);
 
 to_from_bytes!(Int);
 
-#[wasm_bindgen]
+
 impl Int {
     pub fn new(x: &BigNum) -> Self {
         Self(x.0 as i128)
@@ -569,7 +564,7 @@ impl JsonSchema for Int {
 }
 
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct BigInt(num_bigint::BigInt);
 
@@ -605,7 +600,7 @@ impl std::str::FromStr for BigInt {
     }
 }
 
-#[wasm_bindgen]
+
 impl BigInt {
     pub fn as_u64(&self) -> Option<BigNum> {
         let (sign, u64_digits) = self.0.to_u64_digits();

@@ -7,14 +7,14 @@ use super::redeemer_builder::RedeemerWitnessKey;
 /// It contains all the information needed to witness the Plutus script execution
 /// except for the redeemer tag and index
 /// Note: no datum is attached because only input script types have datums
-#[wasm_bindgen]
+
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct PartialPlutusWitness {
     pub(crate) script: PlutusScript,
     pub(crate) data: PlutusData,
 }
 
-#[wasm_bindgen]
+
 impl PartialPlutusWitness {
     pub fn new(
         script: &PlutusScript,
@@ -52,7 +52,7 @@ impl InputAggregateWitnessData {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Default)]
 pub struct RequiredWitnessSet {
     // note: the real key type for these is Vkey
@@ -69,7 +69,7 @@ pub struct RequiredWitnessSet {
     pub(crate) script_refs: BTreeSet<ScriptHash>,
 }
 
-#[wasm_bindgen]
+
 impl RequiredWitnessSet {
     pub fn add_vkey(&mut self, vkey: &Vkeywitness) {
         self.add_vkey_key(&vkey.vkey());
@@ -184,7 +184,7 @@ impl RequiredWitnessSet {
 }
 
 /// Builder de-duplicates witnesses as they are added
-#[wasm_bindgen]
+
 #[derive(Clone, Default, Debug)]
 pub struct TransactionWitnessSetBuilder {
     // See Alonzo spec section 3.1 which defines the keys for these types
@@ -200,7 +200,7 @@ pub struct TransactionWitnessSetBuilder {
     pub(crate) required_wits: RequiredWitnessSet,
 }
 
-#[wasm_bindgen]
+
 impl TransactionWitnessSetBuilder {
     pub fn get_vkeys(&self) -> Vkeys {
         Vkeys(self.vkeys.clone().into_keys().collect())
@@ -467,11 +467,11 @@ pub enum NativeScriptWitnessInfoKind {
     AssumeWorst,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug)]
 pub struct NativeScriptWitnessInfo(NativeScriptWitnessInfoKind);
 
-#[wasm_bindgen]
+
 impl NativeScriptWitnessInfo {
     /// Unsure which keys will sign, but you know the exact number to save on tx fee
     pub fn num_signatures(num: usize) -> NativeScriptWitnessInfo {

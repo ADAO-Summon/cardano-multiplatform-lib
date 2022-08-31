@@ -20,11 +20,6 @@ use std::io::{BufRead, Seek, Write};
 use crate::ledger::common::binary::*;
 use ledger::common::hash::{ScriptHashNamespace, hash_script};
 use ledger::common::value::{BigNum, Int, Coin, Value};
-#[cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))]
-use noop_proc_macro::wasm_bindgen;
-
-#[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
-use wasm_bindgen::prelude::{JsValue, wasm_bindgen};
 
 // This file was code-generated using an experimental CDDL to rust tool:
 // https://github.com/Emurgo/cddl-codegen
@@ -67,7 +62,7 @@ use schemars::JsonSchema;
 
 type DeltaCoin = Int;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct UnitInterval {
     numerator: BigNum,
@@ -78,7 +73,7 @@ to_from_bytes!(UnitInterval);
 
 to_from_json!(UnitInterval);
 
-#[wasm_bindgen]
+
 impl UnitInterval {
     pub fn numerator(&self) -> BigNum {
         self.numerator.clone()
@@ -101,7 +96,7 @@ type Rational = UnitInterval;
 type Epoch = u32;
 type Slot = BigNum;
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Transaction {
     body: TransactionBody,
@@ -114,7 +109,7 @@ to_from_bytes!(Transaction);
 
 to_from_json!(Transaction);
 
-#[wasm_bindgen]
+
 impl Transaction {
     pub fn body(&self) -> TransactionBody {
         self.body.clone()
@@ -159,7 +154,7 @@ type TransactionIndex = BigNum;
 // index of a cert within a tx
 type CertificateIndex = BigNum;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionInputs(Vec<TransactionInput>);
 
@@ -167,7 +162,7 @@ to_from_bytes!(TransactionInputs);
 
 to_from_json!(TransactionInputs);
 
-#[wasm_bindgen]
+
 impl TransactionInputs {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -186,7 +181,7 @@ impl TransactionInputs {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionOutputs(Vec<TransactionOutput>);
 
@@ -194,7 +189,7 @@ to_from_bytes!(TransactionOutputs);
 
 to_from_json!(TransactionOutputs);
 
-#[wasm_bindgen]
+
 impl TransactionOutputs {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -213,7 +208,7 @@ impl TransactionOutputs {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Certificates(Vec<Certificate>);
 
@@ -221,7 +216,7 @@ to_from_bytes!(Certificates);
 
 to_from_json!(Certificates);
 
-#[wasm_bindgen]
+
 impl Certificates {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -243,7 +238,7 @@ impl Certificates {
 pub type RequiredSigners = Ed25519KeyHashes;
 pub type RequiredSignersSet = BTreeSet<Ed25519KeyHash>;
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionBody {
     inputs: TransactionInputs,
@@ -269,7 +264,7 @@ to_from_bytes!(TransactionBody);
 
 to_from_json!(TransactionBody);
 
-#[wasm_bindgen]
+
 impl TransactionBody {
     pub fn inputs(&self) -> TransactionInputs {
         self.inputs.clone()
@@ -428,7 +423,7 @@ impl TransactionBody {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionInput {
     transaction_id: TransactionHash,
@@ -439,7 +434,7 @@ to_from_bytes!(TransactionInput);
 
 to_from_json!(TransactionInput);
 
-#[wasm_bindgen]
+
 impl TransactionInput {
     pub fn transaction_id(&self) -> TransactionHash {
         self.transaction_id.clone()
@@ -463,14 +458,14 @@ enum DatumEnum {
     InlineDatum(PlutusData),
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum DatumKind {
     Hash,
     Inline,
 }
 
-#[wasm_bindgen]
+
 #[derive(
     Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema,
 )]
@@ -479,7 +474,7 @@ pub struct Datum(DatumEnum);
 to_from_bytes!(Datum);
 to_from_json!(Datum);
 
-#[wasm_bindgen]
+
 impl Datum {
     pub fn new_data_hash(data_hash: &DataHash) -> Self {
         Self(DatumEnum::DatumHash(data_hash.clone()))
@@ -510,7 +505,7 @@ impl Datum {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Debug, Clone, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionOutput {
     address: Address,
@@ -523,7 +518,7 @@ to_from_bytes!(TransactionOutput);
 
 to_from_json!(TransactionOutput);
 
-#[wasm_bindgen]
+
 impl TransactionOutput {
     pub fn address(&self) -> Address {
         self.address.clone()
@@ -559,7 +554,7 @@ impl TransactionOutput {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct StakeRegistration {
     stake_credential: StakeCredential,
@@ -569,7 +564,7 @@ to_from_bytes!(StakeRegistration);
 
 to_from_json!(StakeRegistration);
 
-#[wasm_bindgen]
+
 impl StakeRegistration {
     pub fn stake_credential(&self) -> StakeCredential {
         self.stake_credential.clone()
@@ -582,7 +577,7 @@ impl StakeRegistration {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct StakeDeregistration {
     stake_credential: StakeCredential,
@@ -592,7 +587,7 @@ to_from_bytes!(StakeDeregistration);
 
 to_from_json!(StakeDeregistration);
 
-#[wasm_bindgen]
+
 impl StakeDeregistration {
     pub fn stake_credential(&self) -> StakeCredential {
         self.stake_credential.clone()
@@ -605,7 +600,7 @@ impl StakeDeregistration {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct StakeDelegation {
     stake_credential: StakeCredential,
@@ -616,7 +611,7 @@ to_from_bytes!(StakeDelegation);
 
 to_from_json!(StakeDelegation);
 
-#[wasm_bindgen]
+
 impl StakeDelegation {
     pub fn stake_credential(&self) -> StakeCredential {
         self.stake_credential.clone()
@@ -634,7 +629,7 @@ impl StakeDelegation {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Ed25519KeyHashes(Vec<Ed25519KeyHash>);
 
@@ -642,7 +637,7 @@ to_from_bytes!(Ed25519KeyHashes);
 
 to_from_json!(Ed25519KeyHashes);
 
-#[wasm_bindgen]
+
 impl Ed25519KeyHashes {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -661,7 +656,7 @@ impl Ed25519KeyHashes {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Relays(Vec<Relay>);
 
@@ -669,7 +664,7 @@ to_from_bytes!(Relays);
 
 to_from_json!(Relays);
 
-#[wasm_bindgen]
+
 impl Relays {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -688,7 +683,7 @@ impl Relays {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct PoolParams {
     operator: Ed25519KeyHash,
@@ -706,7 +701,7 @@ to_from_bytes!(PoolParams);
 
 to_from_json!(PoolParams);
 
-#[wasm_bindgen]
+
 impl PoolParams {
     pub fn operator(&self) -> Ed25519KeyHash {
         self.operator.clone()
@@ -769,7 +764,7 @@ impl PoolParams {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct PoolRegistration {
     pool_params: PoolParams,
@@ -779,7 +774,7 @@ to_from_bytes!(PoolRegistration);
 
 to_from_json!(PoolRegistration);
 
-#[wasm_bindgen]
+
 impl PoolRegistration {
     pub fn pool_params(&self) -> PoolParams {
         self.pool_params.clone()
@@ -792,7 +787,7 @@ impl PoolRegistration {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct PoolRetirement {
     pool_keyhash: Ed25519KeyHash,
@@ -803,7 +798,7 @@ to_from_bytes!(PoolRetirement);
 
 to_from_json!(PoolRetirement);
 
-#[wasm_bindgen]
+
 impl PoolRetirement {
     pub fn pool_keyhash(&self) -> Ed25519KeyHash {
         self.pool_keyhash.clone()
@@ -821,7 +816,7 @@ impl PoolRetirement {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct GenesisKeyDelegation {
     genesishash: GenesisHash,
@@ -833,7 +828,7 @@ to_from_bytes!(GenesisKeyDelegation);
 
 to_from_json!(GenesisKeyDelegation);
 
-#[wasm_bindgen]
+
 impl GenesisKeyDelegation {
     pub fn genesishash(&self) -> GenesisHash {
         self.genesishash.clone()
@@ -860,7 +855,7 @@ impl GenesisKeyDelegation {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct MoveInstantaneousRewardsCert {
     move_instantaneous_reward: MoveInstantaneousReward,
@@ -870,7 +865,7 @@ to_from_bytes!(MoveInstantaneousRewardsCert);
 
 to_from_json!(MoveInstantaneousRewardsCert);
 
-#[wasm_bindgen]
+
 impl MoveInstantaneousRewardsCert {
     pub fn move_instantaneous_reward(&self) -> MoveInstantaneousReward {
         self.move_instantaneous_reward.clone()
@@ -883,7 +878,7 @@ impl MoveInstantaneousRewardsCert {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum CertificateKind {
     StakeRegistration,
@@ -906,7 +901,7 @@ pub enum CertificateEnum {
     MoveInstantaneousRewardsCert(MoveInstantaneousRewardsCert),
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Certificate(CertificateEnum);
 
@@ -914,7 +909,7 @@ to_from_bytes!(Certificate);
 
 to_from_json!(Certificate);
 
-#[wasm_bindgen]
+
 impl Certificate {
     pub fn new_stake_registration(stake_registration: &StakeRegistration) -> Self {
         Self(CertificateEnum::StakeRegistration(
@@ -1018,7 +1013,7 @@ impl Certificate {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum MIRPot {
     Reserves,
@@ -1031,14 +1026,14 @@ pub enum MIREnum {
     ToStakeCredentials(MIRToStakeCredentials),
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum MIRKind {
     ToOtherPot,
     ToStakeCredentials,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct MIRToStakeCredentials {
     rewards: linked_hash_map::LinkedHashMap<StakeCredential, DeltaCoin>,
@@ -1048,7 +1043,7 @@ to_from_bytes!(MIRToStakeCredentials);
 
 to_from_json!(MIRToStakeCredentials);
 
-#[wasm_bindgen]
+
 impl MIRToStakeCredentials {
     pub fn new() -> Self {
         Self {
@@ -1104,7 +1099,7 @@ impl JsonSchema for MIRToStakeCredentials {
     fn is_referenceable() -> bool { std::collections::BTreeMap::<GenesisHash, ProtocolParamUpdate>::is_referenceable() }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct MoveInstantaneousReward {
     pot: MIRPot,
@@ -1115,7 +1110,7 @@ to_from_bytes!(MoveInstantaneousReward);
 
 to_from_json!(MoveInstantaneousReward);
 
-#[wasm_bindgen]
+
 impl MoveInstantaneousReward {
     pub fn new_to_other_pot(pot: MIRPot, amount: &Coin) -> Self {
         Self {
@@ -1159,7 +1154,7 @@ impl MoveInstantaneousReward {
 
 type Port = u16;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Ipv4([u8; 4]);
 
@@ -1167,7 +1162,7 @@ to_from_bytes!(Ipv4);
 
 to_from_json!(Ipv4);
 
-#[wasm_bindgen]
+
 impl Ipv4 {
     pub fn new(data: Vec<u8>) -> Result<Ipv4, JsError> {
         Self::new_impl(data).map_err(|e| JsError::from_str(&e.to_string()))
@@ -1189,7 +1184,7 @@ impl Ipv4 {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Ipv6([u8; 16]);
 
@@ -1197,7 +1192,7 @@ to_from_bytes!(Ipv6);
 
 to_from_json!(Ipv6);
 
-#[wasm_bindgen]
+
 impl Ipv6 {
     pub fn new(data: Vec<u8>) -> Result<Ipv6, JsError> {
         Self::new_impl(data).map_err(|e| JsError::from_str(&e.to_string()))
@@ -1221,13 +1216,13 @@ impl Ipv6 {
 
 static URL_MAX_LEN: usize = 64;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct URL(String);
 
 to_from_bytes!(URL);
 
-#[wasm_bindgen]
+
 impl URL {
     pub fn new(url: String) -> Result<URL, JsError> {
         Self::new_impl(url).map_err(|e| JsError::from_str(&e.to_string()))
@@ -1252,13 +1247,13 @@ impl URL {
 
 static DNS_NAME_MAX_LEN: usize = 64;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct DNSRecordAorAAAA(String);
 
 to_from_bytes!(DNSRecordAorAAAA);
 
-#[wasm_bindgen]
+
 impl DNSRecordAorAAAA {
     pub fn new(dns_name: String) -> Result<DNSRecordAorAAAA, JsError> {
         Self::new_impl(dns_name).map_err(|e| JsError::from_str(&e.to_string()))
@@ -1281,13 +1276,13 @@ impl DNSRecordAorAAAA {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct DNSRecordSRV(String);
 
 to_from_bytes!(DNSRecordSRV);
 
-#[wasm_bindgen]
+
 impl DNSRecordSRV {
     pub fn new(dns_name: String) -> Result<DNSRecordSRV, JsError> {
         Self::new_impl(dns_name).map_err(|e| JsError::from_str(&e.to_string()))
@@ -1310,7 +1305,7 @@ impl DNSRecordSRV {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SingleHostAddr {
     port: Option<Port>,
@@ -1322,7 +1317,7 @@ to_from_bytes!(SingleHostAddr);
 
 to_from_json!(SingleHostAddr);
 
-#[wasm_bindgen]
+
 impl SingleHostAddr {
     pub fn port(&self) -> Option<Port> {
         self.port.clone()
@@ -1345,7 +1340,7 @@ impl SingleHostAddr {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct SingleHostName {
     port: Option<Port>,
@@ -1356,7 +1351,7 @@ to_from_bytes!(SingleHostName);
 
 to_from_json!(SingleHostName);
 
-#[wasm_bindgen]
+
 impl SingleHostName {
     pub fn port(&self) -> Option<Port> {
         self.port.clone()
@@ -1374,7 +1369,7 @@ impl SingleHostName {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct MultiHostName {
     dns_name: DNSRecordSRV,
@@ -1384,7 +1379,7 @@ to_from_bytes!(MultiHostName);
 
 to_from_json!(MultiHostName);
 
-#[wasm_bindgen]
+
 impl MultiHostName {
     pub fn dns_name(&self) -> DNSRecordSRV {
         self.dns_name.clone()
@@ -1395,7 +1390,7 @@ impl MultiHostName {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum RelayKind {
     SingleHostAddr,
@@ -1410,7 +1405,7 @@ pub enum RelayEnum {
     MultiHostName(MultiHostName),
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Relay(RelayEnum);
 
@@ -1418,7 +1413,7 @@ to_from_bytes!(Relay);
 
 to_from_json!(Relay);
 
-#[wasm_bindgen]
+
 impl Relay {
     pub fn new_single_host_addr(single_host_addr: &SingleHostAddr) -> Self {
         Self(RelayEnum::SingleHostAddr(single_host_addr.clone()))
@@ -1462,7 +1457,7 @@ impl Relay {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct PoolMetadata {
     url: URL,
@@ -1473,7 +1468,7 @@ to_from_bytes!(PoolMetadata);
 
 to_from_json!(PoolMetadata);
 
-#[wasm_bindgen]
+
 impl PoolMetadata {
     pub fn url(&self) -> URL {
         self.url.clone()
@@ -1491,7 +1486,7 @@ impl PoolMetadata {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct StakeCredentials(Vec<StakeCredential>);
 
@@ -1499,7 +1494,7 @@ to_from_bytes!(StakeCredentials);
 
 to_from_json!(StakeCredentials);
 
-#[wasm_bindgen]
+
 impl StakeCredentials {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -1518,7 +1513,7 @@ impl StakeCredentials {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct RewardAddresses(Vec<RewardAddress>);
 
@@ -1526,7 +1521,7 @@ to_from_bytes!(RewardAddresses);
 
 to_from_json!(RewardAddresses);
 
-#[wasm_bindgen]
+
 impl RewardAddresses {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -1545,7 +1540,7 @@ impl RewardAddresses {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Withdrawals(linked_hash_map::LinkedHashMap<RewardAddress, Coin>);
 
@@ -1553,7 +1548,7 @@ to_from_bytes!(Withdrawals);
 
 to_from_json!(Withdrawals);
 
-#[wasm_bindgen]
+
 impl Withdrawals {
     pub fn new() -> Self {
         Self(linked_hash_map::LinkedHashMap::new())
@@ -1605,7 +1600,7 @@ impl JsonSchema for Withdrawals {
     fn is_referenceable() -> bool { std::collections::BTreeMap::<GenesisHash, ProtocolParamUpdate>::is_referenceable() }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionWitnessSet {
     vkeys: Option<Vkeywitnesses>,
@@ -1621,7 +1616,7 @@ to_from_bytes!(TransactionWitnessSet);
 
 to_from_json!(TransactionWitnessSet);
 
-#[wasm_bindgen]
+
 impl TransactionWitnessSet {
     pub fn set_vkeys(&mut self, vkeys: &Vkeywitnesses) {
         self.vkeys = Some(vkeys.clone())
@@ -1692,7 +1687,7 @@ impl TransactionWitnessSet {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ScriptPubkey {
     addr_keyhash: Ed25519KeyHash,
@@ -1702,7 +1697,7 @@ to_from_bytes!(ScriptPubkey);
 
 to_from_json!(ScriptPubkey);
 
-#[wasm_bindgen]
+
 impl ScriptPubkey {
     pub fn addr_keyhash(&self) -> Ed25519KeyHash {
         self.addr_keyhash.clone()
@@ -1715,7 +1710,7 @@ impl ScriptPubkey {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ScriptAll {
     native_scripts: NativeScripts,
@@ -1725,7 +1720,7 @@ to_from_bytes!(ScriptAll);
 
 to_from_json!(ScriptAll);
 
-#[wasm_bindgen]
+
 impl ScriptAll {
     pub fn native_scripts(&self) -> NativeScripts {
         self.native_scripts.clone()
@@ -1738,7 +1733,7 @@ impl ScriptAll {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ScriptAny {
     native_scripts: NativeScripts,
@@ -1748,7 +1743,7 @@ to_from_bytes!(ScriptAny);
 
 to_from_json!(ScriptAny);
 
-#[wasm_bindgen]
+
 impl ScriptAny {
     pub fn native_scripts(&self) -> NativeScripts {
         self.native_scripts.clone()
@@ -1761,7 +1756,7 @@ impl ScriptAny {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ScriptNOfK {
     n: u32,
@@ -1772,7 +1767,7 @@ to_from_bytes!(ScriptNOfK);
 
 to_from_json!(ScriptNOfK);
 
-#[wasm_bindgen]
+
 impl ScriptNOfK {
     pub fn n(&self) -> u32 {
         self.n
@@ -1790,7 +1785,7 @@ impl ScriptNOfK {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TimelockStart {
     slot: Slot,
@@ -1800,7 +1795,7 @@ to_from_bytes!(TimelockStart);
 
 to_from_json!(TimelockStart);
 
-#[wasm_bindgen]
+
 impl TimelockStart {
     pub fn slot(&self) -> Slot {
         self.slot
@@ -1813,7 +1808,7 @@ impl TimelockStart {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TimelockExpiry {
     slot: Slot,
@@ -1823,7 +1818,7 @@ to_from_bytes!(TimelockExpiry);
 
 to_from_json!(TimelockExpiry);
 
-#[wasm_bindgen]
+
 impl TimelockExpiry {
     pub fn slot(&self) -> Slot {
         self.slot
@@ -1836,7 +1831,7 @@ impl TimelockExpiry {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum NativeScriptKind {
     ScriptPubkey,
@@ -1857,7 +1852,7 @@ pub enum NativeScriptEnum {
     TimelockExpiry(TimelockExpiry),
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct NativeScript(NativeScriptEnum);
 
@@ -1865,7 +1860,7 @@ to_from_bytes!(NativeScript);
 
 to_from_json!(NativeScript);
 
-#[wasm_bindgen]
+
 impl NativeScript {
     pub fn hash(&self) -> ScriptHash {
         hash_script(ScriptHashNamespace::NativeScript, self.to_bytes())
@@ -1959,11 +1954,11 @@ impl NativeScript {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct NativeScripts(Vec<NativeScript>);
 
-#[wasm_bindgen]
+
 impl NativeScripts {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -1997,7 +1992,7 @@ impl NoneOrEmpty for NativeScripts {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Update {
     proposed_protocol_parameter_updates: ProposedProtocolParameterUpdates,
@@ -2008,7 +2003,7 @@ to_from_bytes!(Update);
 
 to_from_json!(Update);
 
-#[wasm_bindgen]
+
 impl Update {
     pub fn proposed_protocol_parameter_updates(&self) -> ProposedProtocolParameterUpdates {
         self.proposed_protocol_parameter_updates.clone()
@@ -2029,7 +2024,7 @@ impl Update {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct GenesisHashes(Vec<GenesisHash>);
 
@@ -2037,7 +2032,7 @@ to_from_bytes!(GenesisHashes);
 
 to_from_json!(GenesisHashes);
 
-#[wasm_bindgen]
+
 impl GenesisHashes {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2056,7 +2051,7 @@ impl GenesisHashes {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ScriptHashes(pub (crate) Vec<ScriptHash>);
 
@@ -2064,7 +2059,7 @@ to_from_bytes!(ScriptHashes);
 
 to_from_json!(ScriptHashes);
 
-#[wasm_bindgen]
+
 impl ScriptHashes {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2083,7 +2078,7 @@ impl ScriptHashes {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct ProposedProtocolParameterUpdates(
     linked_hash_map::LinkedHashMap<GenesisHash, ProtocolParamUpdate>,
@@ -2117,7 +2112,7 @@ to_from_bytes!(ProposedProtocolParameterUpdates);
 
 to_from_json!(ProposedProtocolParameterUpdates);
 
-#[wasm_bindgen]
+
 impl ProposedProtocolParameterUpdates {
     pub fn new() -> Self {
         Self(linked_hash_map::LinkedHashMap::new())
@@ -2149,7 +2144,7 @@ impl ProposedProtocolParameterUpdates {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ProtocolVersion {
     major: u32,
@@ -2160,7 +2155,7 @@ to_from_bytes!(ProtocolVersion);
 
 to_from_json!(ProtocolVersion);
 
-#[wasm_bindgen]
+
 impl ProtocolVersion {
     pub fn major(&self) -> u32 {
         self.major
@@ -2176,7 +2171,7 @@ impl ProtocolVersion {
 }
 
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct ProtocolParamUpdate {
     minfee_a: Option<Coin>,
@@ -2211,7 +2206,7 @@ to_from_bytes!(ProtocolParamUpdate);
 
 to_from_json!(ProtocolParamUpdate);
 
-#[wasm_bindgen]
+
 impl ProtocolParamUpdate {
     pub fn set_minfee_a(&mut self, minfee_a: &Coin) {
         self.minfee_a = Some(minfee_a.clone())
@@ -2439,7 +2434,7 @@ impl ProtocolParamUpdate {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionBodies(pub(crate) Vec<TransactionBody>);
 
@@ -2447,7 +2442,7 @@ to_from_bytes!(TransactionBodies);
 
 to_from_json!(TransactionBodies);
 
-#[wasm_bindgen]
+
 impl TransactionBodies {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2466,7 +2461,7 @@ impl TransactionBodies {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionWitnessSets(Vec<TransactionWitnessSet>);
 
@@ -2474,7 +2469,7 @@ to_from_bytes!(TransactionWitnessSets);
 
 to_from_json!(TransactionWitnessSets);
 
-#[wasm_bindgen]
+
 impl TransactionWitnessSets {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2493,13 +2488,13 @@ impl TransactionWitnessSets {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct TransactionIndexes(Vec<TransactionIndex>);
 
 to_from_bytes!(TransactionIndexes);
 
-#[wasm_bindgen]
+
 impl TransactionIndexes {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2518,11 +2513,11 @@ impl TransactionIndexes {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct AuxiliaryDataSet(linked_hash_map::LinkedHashMap<TransactionIndex, AuxiliaryData>);
 
-#[wasm_bindgen]
+
 impl AuxiliaryDataSet {
     pub fn new() -> Self {
         Self(linked_hash_map::LinkedHashMap::new())
@@ -2569,7 +2564,7 @@ impl JsonSchema for AuxiliaryDataSet {
     fn is_referenceable() -> bool { std::collections::BTreeMap::<TransactionIndex, AuxiliaryData>::is_referenceable() }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Block {
     header: Header,
@@ -2583,7 +2578,7 @@ to_from_bytes!(Block);
 
 to_from_json!(Block);
 
-#[wasm_bindgen]
+
 impl Block {
     pub fn header(&self) -> Header {
         self.header.clone()
@@ -2616,7 +2611,7 @@ impl Block {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Header {
     header_body: HeaderBody,
@@ -2627,7 +2622,7 @@ to_from_bytes!(Header);
 
 to_from_json!(Header);
 
-#[wasm_bindgen]
+
 impl Header {
     pub fn header_body(&self) -> HeaderBody {
         self.header_body.clone()
@@ -2645,7 +2640,7 @@ impl Header {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct OperationalCert {
     hot_vkey: KESVKey,
@@ -2658,7 +2653,7 @@ to_from_bytes!(OperationalCert);
 
 to_from_json!(OperationalCert);
 
-#[wasm_bindgen]
+
 impl OperationalCert {
     pub fn hot_vkey(&self) -> KESVKey {
         self.hot_vkey.clone()
@@ -2686,7 +2681,7 @@ impl OperationalCert {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Eq, Debug, PartialEq, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct HeaderBody {
     block_number: u32,
@@ -2707,7 +2702,7 @@ to_from_bytes!(HeaderBody);
 
 to_from_json!(HeaderBody);
 
-#[wasm_bindgen]
+
 impl HeaderBody {
     pub fn block_number(&self) -> u32 {
         self.block_number.clone()
@@ -2787,7 +2782,7 @@ impl HeaderBody {
 
 
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AssetName(Vec<u8>);
 
@@ -2812,7 +2807,7 @@ to_from_bytes!(AssetName);
 
 to_from_json!(AssetName);
 
-#[wasm_bindgen]
+
 impl AssetName {
     pub fn new(name: Vec<u8>) -> Result<AssetName, JsError> {
         Self::new_impl(name).map_err(|e| JsError::from_str(&e.to_string()))
@@ -2861,7 +2856,7 @@ impl JsonSchema for AssetName {
     fn is_referenceable() -> bool { String::is_referenceable() }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct AssetNames(Vec<AssetName>);
 
@@ -2869,7 +2864,7 @@ to_from_bytes!(AssetNames);
 
 to_from_json!(AssetNames);
 
-#[wasm_bindgen]
+
 impl AssetNames {
     pub fn new() -> Self {
         Self(Vec::new())
@@ -2891,7 +2886,7 @@ impl AssetNames {
 pub type PolicyID = ScriptHash;
 pub type PolicyIDs = ScriptHashes;
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Default, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Assets(pub (crate) std::collections::BTreeMap<AssetName, BigNum>);
 
@@ -2899,7 +2894,7 @@ to_from_bytes!(Assets);
 
 to_from_json!(Assets);
 
-#[wasm_bindgen]
+
 impl Assets {
     pub fn new() -> Self {
         Self(std::collections::BTreeMap::new())
@@ -2922,7 +2917,7 @@ impl Assets {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct MultiAsset(pub (crate) std::collections::BTreeMap<PolicyID, Assets>);
 
@@ -2930,7 +2925,7 @@ to_from_bytes!(MultiAsset);
 
 to_from_json!(MultiAsset);
 
-#[wasm_bindgen]
+
 impl MultiAsset {
     pub fn new() -> Self {
         Self(std::collections::BTreeMap::new())
@@ -3049,11 +3044,11 @@ impl PartialOrd for MultiAsset {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct MintAssets(std::collections::BTreeMap<AssetName, Int>);
 
-#[wasm_bindgen]
+
 impl MintAssets {
     pub fn new() -> Self {
         Self(std::collections::BTreeMap::new())
@@ -3082,7 +3077,7 @@ impl MintAssets {
     }
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct Mint(std::collections::BTreeMap<PolicyID, MintAssets>);
 
@@ -3090,7 +3085,7 @@ to_from_bytes!(Mint);
 
 to_from_json!(Mint);
 
-#[wasm_bindgen]
+
 impl Mint {
     pub fn new() -> Self {
         Self(std::collections::BTreeMap::new())
@@ -3151,14 +3146,14 @@ impl Mint {
 }
 
 
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub enum NetworkIdKind {
     Testnet,
     Mainnet,
 }
 
-#[wasm_bindgen]
+
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, serde::Serialize, serde::Deserialize, JsonSchema)]
 pub struct NetworkId(NetworkIdKind);
 
@@ -3166,7 +3161,7 @@ to_from_bytes!(NetworkId);
 
 to_from_json!(NetworkId);
 
-#[wasm_bindgen]
+
 impl NetworkId {
     pub fn testnet() -> Self {
         Self(NetworkIdKind::Testnet)

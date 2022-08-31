@@ -7,7 +7,7 @@ use crate::metadata::{AuxiliaryData, GeneralTransactionMetadata};
 /// since u64 in CBOR are fixed size (will prefix with 0s to stay a constant width regardless of value)
 pub const force_u64: u64 = 0x01_00_00_00_00; 
 
-#[wasm_bindgen]
+
 impl GeneralTransactionMetadata {
     pub fn add(&mut self, other: &GeneralTransactionMetadata) {
         for idx in 0..other.len() {
@@ -31,7 +31,7 @@ impl GeneralTransactionMetadata {
     }
 }
 
-#[wasm_bindgen]
+
 impl AuxiliaryData {
 
     /// Add a single metadatum using TransactionMetadatum object under `key` TranscactionMetadatumLabel
