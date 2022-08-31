@@ -19,6 +19,7 @@ use cbor_event::{self, de::Deserializer, se::{Serialize, Serializer}};
 use cbor_event::Type as CBORType;
 
 use cbor_event::Special as CBORSpecial;
+use wasm_bindgen::JsValue;
 
 use crate::{chain_crypto::hash::Blake2b224, crypto::impl_hash_type};
 use crate::error::{DeserializeError, DeserializeFailure};

@@ -16,6 +16,7 @@ extern crate hex;
 
 use std::convert::TryInto;
 use std::io::{BufRead, Seek, Write};
+use wasm_bindgen::JsValue;
 
 use crate::ledger::common::binary::*;
 use ledger::common::hash::{ScriptHashNamespace, hash_script};

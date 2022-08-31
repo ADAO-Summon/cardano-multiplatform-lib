@@ -707,6 +707,7 @@ pub struct PublicKeys(Vec<PublicKey>);
 
 
 impl PublicKeys {
+    // #[wasm_bindgen(constructor)]
     pub fn new() -> PublicKeys {
         PublicKeys(vec![])
     }

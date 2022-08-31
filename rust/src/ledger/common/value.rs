@@ -1,14 +1,14 @@
 use std::io::{BufRead, Seek, Write};
 
-use schemars::JsonSchema;
-
 use cbor_event::Special as CBORSpecial;
 use cbor_event::Type as CBORType;
 
 use crate::{to_from_bytes, error::{JsError, DeserializeError, DeserializeFailure}, to_from_json, MultiAsset, Assets};
 use cbor_event::{self, de::Deserializer, se::{Serialize, Serializer}};
+use wasm_bindgen::JsValue;
 use super::binary::*;
 
+use schemars::JsonSchema;
 // Generic u64 wrapper for platforms that don't support u64 or BigInt/etc
 // This is an unsigned type - no negative numbers.
 // Can be converted to/from plain rust 
